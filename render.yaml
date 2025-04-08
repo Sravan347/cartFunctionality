@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: cart-backend
+    env: node
+    buildCommand: cd api && npm install
+    startCommand: cd api && npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 18
+
+  - type: web
+    name: cart-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
