@@ -5,29 +5,38 @@ const productRouter = require("./routes/productRoute");
 const cartRouter = require("./routes/cartRoute");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+
+
 dotenv.config();
+
 const app = express();
 
-// app.get("/test", (req, res) => {
-//   res.send("Test working");
-// });
-app.use(cors());
-app.use(bodyParser.json()); 
-app.use(bodyParser.urlencoded({ extended: true })); 
+app.use(cors({
+  origin: ["https://your-frontend.onrender.com"],
+  credentials: true,
+}));
 
-app.use("/api",productRouter);
-app.use('/api/cart' , cartRouter)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-const PORT = process.env.PORT || 6000;
+app.use("/api", productRouter);
+app.use("/api/cart", cartRouter);
+
+app.get("/test", (req, res) => {
+  res.send("Backend is running ✅");
+});
+
+
+const PORT = process.env.PORT || 7000;
 
 const server = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
     app.listen(PORT, () => {
-      console.log(`The server is working on port no: ${PORT}`);
+      console.log(`🚀 Server running on http://localhost:${PORT}`);
     });
   } catch (error) {
-    console.log(error);
+    console.error("❌ Server error:", error);
   }
 };
 
